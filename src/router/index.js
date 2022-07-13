@@ -1,22 +1,60 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
-    name: 'home',
-    component: HomeView
+    name: 'login',
+    path: '/login',
+    component: () => import('@/views/login/index.vue')
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    name: 'layout',
+    path: '/',
+    component: () => import('@/layout/index.vue'),
+    redirect: '/',
+    children: [
+      {
+        name: 'index',
+        path: '/',
+        component: () => import('@/views/index/index.vue')
+      }
+    ]
+  },
+  {
+    name: 'sys',
+    path: '/sys',
+    component: () => import('@/layout/index.vue'),
+    meta: {
+      title: '系统管理'
+    },
+    children: [
+      {
+        name: 'sys-users',
+        path: '/sys/users',
+        meta: {
+          title: '用户管理'
+        },
+        component: () => import('@/views/sys-users/index.vue')
+      },
+      {
+        name: 'sys-roles',
+        path: '/sys/roles',
+        meta: {
+          title: '角色管理'
+        },
+        component: () => import('@/views/sys-roles/index.vue')
+      },
+      {
+        name: 'sys-menus',
+        path: '/sys/menus',
+        meta: {
+          title: '菜单管理'
+        },
+        component: () => import('@/views/sys-menus/index.vue')
+      }
+    ]
   }
 ]
 
